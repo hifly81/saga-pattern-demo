@@ -1,0 +1,19 @@
+{
+  "name": "ticket-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "slot.name" : "debeziumtic",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname" : "tickets",
+    "database.server.name": "dbserver1",
+    "schema.whitelist": "public",
+    "table.whitelist" : "public.ticketevent",
+    "tombstones.on.delete" : "false",
+    "transforms" : "router",
+    "transforms.router.type" : "com.redhat.demo.saga.connect.TicketEventRouter"
+  }
+}
