@@ -1,20 +1,12 @@
-Saga microservices Playground
+Saga Choreography with Kafka, Debezium and Quarkus
 =============================
 
-## Saga Choreography with Kafka, Debezium and Quarkus
-
-### Create Native Image
-
-Launch the script to create the native images:
-
-```bash
-cd choreography/
-./build-image.sh
-```
 ### Launch on OpenShift
 
-An already running OCP cluster is available at:<br>
+An already running ocp cluster is available at:<br>
 https://ocp.nodisk.space:8443/console/project/saga-playgrounds/overview
+
+These are the URLs of public microservices:
 
 Ticket service:<br>
 http://ticket-service-quarkus-saga-playgrounds.apps.nodisk.space
@@ -22,7 +14,10 @@ http://ticket-service-quarkus-saga-playgrounds.apps.nodisk.space
 Insurance service:<br>
 http://insurance-service-quarkus-saga-playgrounds.apps.nodisk.space
 
-Images are downloaded from docker hub and from quay.io.
+Outbox connect service:<br>
+http://outbox-connect-service-quarkus-saga-playgrounds.apps.nodisk.space
+
+Images are downloaded from docker hub and from https://quay.io
 
 Images:
  - Postgres (image debezium/postgres) on port 5432
@@ -32,6 +27,8 @@ Images:
  - Insurance Service (image quay.io/bridlos/insurance-service-quarkus) on port 8080
  - Payment Service (image quay.io/bridlos/payment-service-quarkus) on port 8080
 
+ Elastic Search and Kibana are not installed in Openshift (available only for local installation).
+
  Run a simulation:
 
 ```bash
@@ -40,15 +37,19 @@ cd simulation/
 ./test-ocp-saga-failed.sh
 ```
 
+Watch a video of a simulation at (set video quality to 1080):<br>
+https://www.youtube.com/watch?v=7cLbRIc3TWU
+[![Alt text](http://www.myiconfinder.com/uploads/iconsets/32-32-3a1eef40f04875d93dd6545f2f1b727e-youtube.png)](https://www.youtube.com/watch?v=7cLbRIc3TWU)
+
 In order to create the demo on your openshift environment, you need:
- - a ocp user with cluster-admin role
- - oc client installed on your machine
- - AMQ Streams 1.1 for OCP downloaded from Red Hat<br>
+ - ocp user with cluster-admin role
+ - oc client installed on your machine (tested with 3.11.x)
+ - AMQ Streams 1.1 for ocp downloaded from Red Hat<br>
  https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams
 
-Follow the instruction to create the demo:
+Follow these instructions to create the demo:
 
-Login to OCP, create a new project, create e new service account runasanyuid (postgres must run as root):
+Login to ocp, create a new project, create e new service account runasanyuid (postgres must run as root):
 ```bash
 oc login <ocp_master_url> --token=<ocp_user_token>
 oc new-project saga-playgrounds
@@ -66,11 +67,13 @@ oc exec $(oc get pods | grep postgres | cut -d " " -f1) -- bash -c 'psql -h loca
 oc exec $(oc get pods | grep postgres | cut -d " " -f1) -- bash -c 'psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE insurances;"'
 ```
 
-Install AMQ Streams cluster operator and a kafka cluster with 3 brokers (ephemeral and with jmx metrics).<br>
-This step requires that you've downloaded and unpacked the AMQ Streams zip archive for OCP (for more info about the installation, https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/index)
+Install AMQ Streams cluster operator and a kafka cluster with 3 brokers (ephemeral and with prometheus metrics).<br>
+This step requires that you've downloaded and unpacked the AMQ Streams zip archive for ocp <br>
+(for more info about the installation, https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/index)
 
 
 ```bash
+#replace the template namespace with saga-playgrounds
 sed -i 's/namespace: .*/namespace: saga-playgrounds/' install/cluster-operator/*RoleBinding*.yaml
 oc apply -f install/cluster-operator/020-RoleBinding-strimzi-cluster-operator.yaml -n saga-playgrounds
 oc apply -f install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml -n saga-playgrounds
@@ -79,13 +82,13 @@ oc apply -f install/cluster-operator -n saga-playgrounds
 oc apply -f examples/metrics/kafka-metrics.yaml
 ```
 
-Create outbox-connect application:
+Create the outbox-connect application:
 ```bash
 oc new-app quay.io/bridlos/outbox-connect -e ES_DISABLED=true -e BOOTSTRAP_SERVERS=my-cluster-kafka-bootstrap:9092 -e GROUP_ID=1 -e CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE=false -e CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE=false -e CONFIG_STORAGE_TOPIC=my-connect-configs -e OFFSET_STORAGE_TOPIC=my-connect-offsets
 oc expose svc/outbox-connect
 ```
 
-Install debezium connectors:
+Install the debezium connectors:
 ```bash
 cd debezium/connector/
 
@@ -119,7 +122,7 @@ Download and import grafana dashboard for kafka and zookeeper, dashboard can be 
 wget https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/metrics/examples/grafana/strimzi-kafka.json<br>
 wget https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/metrics/examples/grafana/strimzi-zookeeper.json
 
-Follow the instruction to import the grafana dashboards:<br>
+Follow the instruction to import the kafka and zookeeper grafana dashboards:<br>
 https://strimzi.io/docs/latest/#grafana_dashboard
 
 Grafana dashboards:
@@ -180,3 +183,12 @@ This is the final state inside the microservices databases at the end of the 2 s
 Events as stored in Elastic Search (No Openshift) (Kibana view):
 
 ![ScreenShot 7](choreography/images/kibana.png)
+
+### Compile and Create Images
+
+Launch the script to compile and create the images:
+
+```bash
+cd choreography/
+./build-image.sh
+```
