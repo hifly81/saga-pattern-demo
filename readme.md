@@ -3,7 +3,7 @@ Saga Choreography with Kafka, Debezium and Quarkus
 
 ### Launch on OpenShift
 
-An already running ocp cluster is available at:<br>
+A running ocp (3.11) cluster is available at:<br>
 https://ocp.nodisk.space:8443/console/project/saga-playgrounds/overview
 
 These are the URLs of public microservices:
