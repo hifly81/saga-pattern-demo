@@ -54,6 +54,7 @@ Login to ocp, create a new project, create e new service account runasanyuid (po
 oc login <ocp_master_url> --token=<ocp_user_token>
 oc new-project saga-playgrounds
 oc create serviceaccount runasanyuid
+oc adm policy add-scc-to-user anyuid -z runasanyuid -n saga-playgrounds
 ```
 
 Create postgres, then create tickets, insurances and payments database:
