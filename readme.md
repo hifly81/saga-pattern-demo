@@ -133,7 +133,7 @@ Grafana dashboards:
 ![ScreenShot 2](choreography/images/zookeeper.png)
 
 
-### Launch on local env - linux and mac
+### Launch on local Docker - linux and mac
 
 Launch the bootstrap script to create the docker containers.<br>
 Images are downloaded from docker hub and from quay.io.
