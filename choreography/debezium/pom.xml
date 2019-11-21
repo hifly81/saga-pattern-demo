@@ -38,8 +38,7 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <excludes>
-                                </excludes>
+                                <excludes/>
                             </artifactSet>
                         </configuration>
                     </execution>

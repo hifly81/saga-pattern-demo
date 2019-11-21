@@ -1,6 +1,79 @@
 Saga Choreography with Kafka, Debezium and Quarkus
 =============================
 
+### Architecture
+
+![ScreenShot 1](choreography/images/saga1.png)
+
+![ScreenShot 1](choreography/images/saga2.png)
+
+### Launch local in dev mode
+
+Launch the script to compile and create the images:
+
+Run Postgres and create the databases:
+
+```bash
+docker run -d --name postgres -p 5432:5432 debezium/postgres
+docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE tickets;'
+docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE payments;'
+docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE insurances;'
+```
+
+Run Zookeeper and Kafka:
+
+```bash
+docker run -d --name zookeeper -p 2181:2181 -p 2888:2888 -p 3888:3888 debezium/zookeeper
+docker run -d --name my-cluster-kafka-bootstrap -p 9092:9092 --link zookeeper:zookeeper debezium/kafka
+```
+
+Create debezium kafka-connector image:
+
+```bash
+cd debezium/
+mvn compile package
+docker build -t outbox-connect:latest .
+```
+
+Run debezium kafka-connector and install the connectors:
+
+```bash
+docker run -d --name connect -p 8083:8083 -e BOOTSTRAP_SERVERS=my-cluster-kafka-bootstrap:9092 -e GROUP_ID=1 -e CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE=false -e CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE=false -e CONFIG_STORAGE_TOPIC=my-connect-configs -e OFFSET_STORAGE_TOPIC=my-connect-offsets -e ADVERTISED_HOST_NAME=${DOCKER_HOST} --link zookeeper:zookeeper --link postgres:postgres --link my-cluster-kafka-bootstrap:my-cluster-kafka-bootstrap outbox-connect
+curl -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d @connector/ticket-connector.json
+curl -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d @connector/order-connector.json
+curl -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d @connector/payment-connector.json
+```
+
+Run ticket service in dev mode:
+
+```bash
+cd ticket/
+./mvnw compile quarkus:dev
+```
+
+Run insurance service in dev mode:
+
+```bash
+cd insurance/
+./mvnw compile quarkus:dev
+```
+
+Run payment service in dev mode:
+
+```bash
+cd payment/
+./mvnw compile quarkus:dev
+```
+
+### Compile and Create Images
+
+Launch the script to compile and create the images:
+
+```bash
+cd choreography/
+./build-image.sh
+```
+
 ### Launch on OpenShift
 
 A running ocp (3.11) cluster is available at:<br>
@@ -184,12 +257,3 @@ This is the final state inside the microservices databases at the end of the 2 s
 Events as stored in Elastic Search (No Openshift) (Kibana view):
 
 ![ScreenShot 7](choreography/images/kibana.png)
-
-### Compile and Create Images
-
-Launch the script to compile and create the images:
-
-```bash
-cd choreography/
-./build-image.sh
-```
