@@ -12,7 +12,7 @@ Saga Choreography with Kafka, Debezium and Quarkus
 Launch Docker Postgres and create the databases:
 
 ```bash
-docker run -d --name postgres -p 5432:5432 debezium/postgres
+docker run -d --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 debezium/postgres
 docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE tickets;'
 docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE payments;'
 docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE insurances;'
