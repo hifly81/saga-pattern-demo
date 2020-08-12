@@ -74,21 +74,7 @@ cd simulation/
 
 ### Launch on OpenShift
 
-A running ocp (3.11) cluster is available at:<br>
-https://ocp.nodisk.space:8443/console/project/saga-playgrounds/overview
-
-These are the URLs of public microservices:
-
-Ticket service:<br>
-http://ticket-service-quarkus-saga-playgrounds.apps.nodisk.space
-
-Insurance service:<br>
-http://insurance-service-quarkus-saga-playgrounds.apps.nodisk.space
-
-Outbox connect service:<br>
-http://outbox-connect-service-quarkus-saga-playgrounds.apps.nodisk.space
-
-Images are downloaded from docker hub and from https://quay.io
+Images can be downloaded from docker hub and from https://quay.io
 
 Images:
  - Postgres (image debezium/postgres) on port 5432
@@ -114,8 +100,8 @@ https://www.youtube.com/watch?v=7cLbRIc3TWU
 
 In order to create the demo on your openshift environment, you need:
  - ocp user with cluster-admin role
- - oc client installed on your machine (tested with 3.11.x)
- - AMQ Streams 1.1 for ocp downloaded from Red Hat<br>
+ - oc client installed on your machine
+ - AMQ Streams 1.x for ocp downloaded from Red Hat<br>
  https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams
 
 Follow these instructions to create the demo:
