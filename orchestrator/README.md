@@ -3,7 +3,14 @@ Saga Coordinator with ksqlDB
 
 ### Architecture
 
+
+![ScreenShot 1](images/saga0.png)
+
+Successful path
+
 ![ScreenShot 1](images/saga1.png)
+
+Unsuccessful path
 
 ![ScreenShot 1](images/saga2.png)
 
