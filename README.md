@@ -7,10 +7,10 @@ Demo of saga pattern using Apache Kafka, Debezium.
 
 Saga Choreography with Kafka, Debezium and Quarkus
 
-[Link](choreography)
+[Saga Choreography using Quarkus](choreography)
 
 ### Saga Coordinator with ksqlDB
 
 Saga Choreography with Kafka, Debezium and ksqlDB
 
-[Link](choreography-ksql)
+[Saga Choreography using ksqlDB](choreography-ksql)
