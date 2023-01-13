@@ -3,9 +3,9 @@ Saga Choreography with Kafka, Debezium and Quarkus
 
 ### Architecture
 
-![ScreenShot 1](choreography/images/saga1.png)
+![ScreenShot 1](images/saga1.png)
 
-![ScreenShot 1](choreography/images/saga2.png)
+![ScreenShot 1](images/saga2.png)
 
 ### Launch on your local environment in quarkus dev mode
 
@@ -185,9 +185,9 @@ https://strimzi.io/docs/latest/#grafana_dashboard
 
 Grafana dashboards:
 
-![ScreenShot 1](choreography/images/kafka.png)
+![ScreenShot 1](images/kafka.png)
 
-![ScreenShot 2](choreography/images/zookeeper.png)
+![ScreenShot 2](images/zookeeper.png)
 
 
 ### Launch on local Docker - linux and mac
@@ -226,18 +226,18 @@ cd simulation/
 
 This is the final state inside the microservices databases at the end of the 2 sagas:
 
-![ScreenShot 1](choreography/images/ticketevent.png)
+![ScreenShot 1](images/ticketevent.png)
 
-![ScreenShot 2](choreography/images/orderevent.png)
+![ScreenShot 2](images/orderevent.png)
 
-![ScreenShot 3](choreography/images/paymentevent.png)
+![ScreenShot 3](images/paymentevent.png)
 
-![ScreenShot 4](choreography/images/tickettable.png)
+![ScreenShot 4](images/tickettable.png)
 
-![ScreenShot 5](choreography/images/insurancetable.png)
+![ScreenShot 5](images/insurancetable.png)
 
-![ScreenShot 6](choreography/images/accounttable.png)
+![ScreenShot 6](images/accounttable.png)
 
 Events as stored in Elastic Search (No Openshift) (Kibana view):
 
-![ScreenShot 7](choreography/images/kibana.png)
+![ScreenShot 7](images/kibana.png)
