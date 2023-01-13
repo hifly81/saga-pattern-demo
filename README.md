@@ -1,7 +1,7 @@
-Saga Demo
+Saga Demo showcase
 =============================
 
-Demo of saga pattern using Apache Kafka, Debezium.
+Demo of saga pattern using Apache Kafka, Debezium, ksqlDB.
 
 ### Saga Choreography
 
