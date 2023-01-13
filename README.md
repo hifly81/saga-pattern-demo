@@ -1,4 +1,4 @@
-Saga Choreography Demo
+Saga Demo
 =============================
 
 Demo of saga pattern using Apache Kafka, Debezium.
@@ -7,6 +7,6 @@ Demo of saga pattern using Apache Kafka, Debezium.
 
 [Saga Choreography with Kafka, Debezium and Quarkus](choreography)
 
-### Saga Coordinator with ksqlDB
+### Saga Orchestrator with ksqlDB
 
-[Saga Choreography with Kafka, Debezium and ksqlDB](choreography-ksql)
+[Saga Orchestrator with Kafka, Debezium and ksqlDB](orchestrator)

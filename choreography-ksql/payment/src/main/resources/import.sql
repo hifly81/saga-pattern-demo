@@ -1,1 +1,0 @@
-insert into account(id, funds) values ('AA2', 1000);
