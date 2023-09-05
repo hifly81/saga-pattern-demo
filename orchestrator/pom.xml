@@ -9,7 +9,7 @@
     <!-- Keep versions as properties to allow easy modification -->
     <java.version>8</java.version>
     <confluent.version>6.1.0</confluent.version>
-    <kafka.version>2.5.0</kafka.version>
+    <kafka.version>5.3.0-ccs</kafka.version>
     <avro.version>1.9.1</avro.version>
     <slf4j.version>1.7.30</slf4j.version>
     <!-- Maven properties for compilation -->
